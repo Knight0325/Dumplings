@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{dist/css/font-awesome.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{dist/css/ionicons.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{dist/css/adminlte.min.css}">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <b>小饺商城</b>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">小饺 安全，营养，美味</p>
+            <form action="#" onsubmit="return false;" method="post">
+                <div class="form-group">
+                    <div class="alert alert-danger" style="display: none;">错误信息展示栏。</div>
+                </div>
+                <div class="form-group has-feedback">
+                    <span class="fa fa-user form-control-feedback"></span>
+                    <input type="text" id="userName" class="form-control" placeholder="默认账号：admin">
+                </div>
+                <div class="form-group has-feedback">
+                    <span class="fa fa-lock form-control-feedback"></span>
+                    <input type="password" id="password" class="form-control" placeholder="默认密码：123456">
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox"> 记住我
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" onclick="login()" class="btn btn-primary btn-block btn-flat">登录
+                        </button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+<script th:src="@{plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{js/login.js}"></script>
+</body>
+</html>

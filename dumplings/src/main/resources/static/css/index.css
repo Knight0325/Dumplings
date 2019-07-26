@@ -1,0 +1,14 @@
+.content-background{
+    height: 696px;
+    background-image:url("http://zhiyou101:8848/imgs/dumplingsbg.jpg");
+    background-repeat: no-repeat;
+    background-size: 1300px 696px;
+}
+.content-iframe{
+    width: 100%;
+    height: 100%;
+}
+
+.position-bottom{
+
+}

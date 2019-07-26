@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <!-- jqgrid ui -->
+    <link href="/plugins/jqgrid-5.3.0/ui.jqgrid-bootstrap4.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/plugins/flatpickr/flatpickr.dark.min.css">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css">
+    <!-- sweet alert -->
+    <link rel="stylesheet" href="/plugins/sweetalert/sweetalert.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <!-- custombox -->
+    <link rel="stylesheet" href="/plugins/custombox/custombox.min.css">
+    <link rel="stylesheet" href="/css/good.css">
+
+</head>
+<body>
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" style="margin-left: 0;height: 692px">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">商品列表页</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a th:href="index.html">主页</a></li>
+                            <li class="breadcrumb-item active">商品列表页</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="grid-btn">
+                                <label>
+                                    <input th:type="text" th:value="${msg}" th:style="${'width:200px;'+'color:#FF0000;'+'border:none;'}">
+                                </label>
+                                <button class="btn btn-default inline-block" onclick="add()">
+                                    添加
+                                </button>
+                                <button class="btn btn-info inline-block" onclick="search()"><i
+                                        class="fa fa-search"></i>&nbsp;搜索
+                                </button>
+                                <input style="width: 300px" type="text" placeholder="关键字" id="keyword" class="form-control col-1 inline-block">&nbsp;
+                            </div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>编号</th>
+                                    <th>品牌</th>
+                                    <th>口味</th>
+                                    <th>重量</th>
+                                    <th>图片</th>
+                                    <th>价格</th>
+                                    <th>库存</th>
+                                    <th>保质期到</th>
+                                    <th>状态</th>
+                                    <th>买点</th>
+                                    <th>操作</th>
+                                </tr>
+                                <tr th:each="good:${dumplings}">
+                                    <td th:text="${good.id}"></td>
+                                    <td th:text="${good.brandName}"></td>
+                                    <td th:text="${good.tasteName}" style="width: 60px"></td>
+                                    <td th:text="${good.weight} + '千克'"></td>
+                                    <td><img style="width:50px;height: 50px;" th:src="${good.path}"></td>
+                                    <td th:text="${good.price} + '分'"></td>
+                                    <td th:switch ="${good.stock>5}">
+                                        <span th:case="true" th:text="库存充足"></span>
+                                        <span th:case="false" th:text="库存紧张" th:style="'color:'+'#FF0000'"></span>
+                                    </td>
+                                    <td th:text="${good.endDate}"></td>
+                                    <td th:switch="${good.status==1}">
+                                        <span th:case="true" th:text="热卖中" th:style="'color:'+'#FF0000'"></span>
+                                        <span th:case="false" th:text="已下架" th:style="'color:'+'#808080'"></span>
+                                    </td>
+                                    <td th:text="${good.hotPoint}"></td>
+                                    <td>
+                                        <a th:href="@{/goods/showDetails(id=${good.id})}" th:title="查看详情">
+                                            <span class="glyphicon glyphicon-th-large"></span>
+                                        </a>
+                                        <b>|</b>
+                                        <a th:href="@{/orderdums/edit(id=${good.id})}" th:text="马上购买">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- custombox div -->
+<div class="content" id="custombox-add" style="display: none">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 400px;height: 850px;">
+            <div class="modal-header">
+                <h6 class="modal-title" id="custombox-title">添加商品</h6>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="alert alert-danger" style="display: none;">ESC键退出或者点击空白处退出</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="brandId" class="control-label">品牌:</label>
+                        <select class="form-control" id = "brandId">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tasteId" class="control-label">口味:</label>
+                        <select class="form-control" id = "tasteId">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight" class="control-label">重量:</label>
+                        <input type="number" class="form-control" id="weight">
+                    </div>
+                    <div class="form-group">
+                        <label for="price" class="control-label">价格:</label>
+                        <input type="number" class="form-control" id="price">
+                    </div>
+                    <div class="form-group">
+                        <label for="stock" class="control-label">库存:</label>
+                        <input type="number" class="form-control" id="stock">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate" class="control-label">保质期:</label>
+                        <input type="date" class="form-control" id="endDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="hotPoint" class="control-label">卖点:</label>
+                        <input type="text" class="form-control" id="hotPoint">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" id="path">
+                        <button class="btn btn-info float-right" id = "upload"><i
+                                class="fa fa-plus"></i>&nbsp;添加图片
+                        </button>
+                        <img class="float-right margin-right" src="" style="display: none" id ="img">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="addButton">确认</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.content -->
+</div>
+<!-- 填写订单 -->
+
+<!-- custombox div END-->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/plugins/custombox/custombox.min.js"></script>
+<script src="/plugins/custombox/custombox.legacy.min.js"></script>
+<script src="/plugins/ajaxupload/ajaxupload.js"></script>
+<script src="/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="/js/good.js"></script>
+</body>
+</html>

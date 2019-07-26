@@ -1,0 +1,8 @@
+.inline-block{
+    display: inline-block;
+    float: right;
+    margin: 0 0 10px 20px;
+}
+.margin-right{
+    margin-right: 70px;
+}

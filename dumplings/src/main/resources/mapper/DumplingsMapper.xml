@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhiyou100.dumplings.mapper.DumplingsMapper">
+    <resultMap id="BaseMap" type="com.zhiyou100.dumplings.entity.Dumplings">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result property="brandId" column="brand_id"/>
+        <result property="tasteId" column="taste_id"/>
+        <result property="weight" column="weight"/>
+        <result property="path" column="path"/>
+        <result property="addDate" column="add_date"/>
+        <result property="price" column="price"/>
+        <result property="stock" column="stock"/>
+        <result property="endDate" column="end_date"/>
+        <result property="status" column="status"/>
+        <result property="hotPoint" column="hot_point"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+      id, brand_id,taste_id,weight,path,add_date,price,stock,end_date,status,hot_point
+    </sql>
+    <select id="queryAll" resultMap="BaseMap">
+        select d.* ,b.name as brandName,t.name as tasteName from dumplings d
+        inner join brands b on d.brand_id = b.id
+        inner join tastes t on d.taste_id = t.id
+        where d.status = 1
+    </select>
+    <insert id="add">
+        insert into dumplings
+        values (#{id},#{brandId},#{tasteId},#{weight},#{path},now(),#{price},#{stock},#{endDate},#{status},#{hotPoint});
+    </insert>
+</mapper>
